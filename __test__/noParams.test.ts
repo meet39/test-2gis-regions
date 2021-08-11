@@ -4,7 +4,7 @@ import { sendGetRequest } from '../services/api';
 
 const fullURL = API.regions.fullURL;
 
-describe('Positive tests', () => {
+describe('Without any params: Positive tests', () => {
   let data: ResponseData;
 
   beforeEach(async () => {

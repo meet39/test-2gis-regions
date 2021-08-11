@@ -3,7 +3,7 @@ import { API } from '../config';
 import { sendGetRequest } from '../services/api';
 const fullURL = API.regions.fullURL;
 
-describe('Positive tests', () => {
+describe('Query param: Positive tests', () => {
   it('Search should be fuzzy and case-insensitive', async () => {
     const response = await sendGetRequest(fullURL, {
       q: 'ОВОСИБИРС'
@@ -36,7 +36,7 @@ describe('Positive tests', () => {
   });
 });
 
-describe('Negative tests', () => {
+describe('Query param: Negative tests', () => {
   it.each([
     ['', 'Empty'],
     ['A', 'One sign'],

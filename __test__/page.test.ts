@@ -3,7 +3,7 @@ import { sendGetRequest } from '../services/api';
 import { API } from '../config';
 const fullURL = API.regions.fullURL;
 
-describe('Positive tests', () => {
+describe('Page param: Positive tests', () => {
   it('Pages should be unique', async () => {
     const firstPageRes = await sendGetRequest(fullURL, {
       page: '1'
@@ -35,13 +35,13 @@ describe('Positive tests', () => {
   });
 });
 
-describe('Negative tests', () => {
+describe('Page param: Negative tests', () => {
   it.each([
     [-1, 'Negative', 'Параметр \'page\' должен быть больше 0'],
     [0, 'Zero', 'Параметр \'page\' должен быть больше 0'],
-    [0.5, 'Fractional', 'Параметр \'page\' длжен быть целым числом'],
-    [NaN, 'NaN', 'Параметр \'page\' длжен быть целым числом'],
-    ['', 'Empty', 'Параметр \'page\' длжен быть целым числом']
+    [0.5, 'Fractional', 'Параметр \'page\' должен быть целым числом'],
+    [NaN, 'NaN', 'Параметр \'page\' должен быть целым числом'],
+    ['', 'Empty', 'Параметр \'page\' должен быть целым числом']
   ])('[%s] %s should throw error', async (pageValue:number | string, reason:string, errorMessage: string) => {
     const response = await sendGetRequest(fullURL, {
       page: pageValue

@@ -3,7 +3,7 @@ import { sendGetRequest } from '../services/api';
 import { API } from '../config';
 const fullURL = API.regions.fullURL;
 
-describe('Positive tests', () => {
+describe('Page Size param: Positive tests', () => {
   it.each([
     [5],
     [10],
@@ -19,7 +19,7 @@ describe('Positive tests', () => {
   });
 });
 
-describe('Negative tests', () => {
+describe('Page Size param: Negative tests', () => {
   it.each([
     [NaN, 'Not a Number'],
     ['', 'Empty'],

@@ -3,7 +3,7 @@ import { API } from '../config';
 import { sendGetRequest } from '../services/api';
 const fullURL = API.regions.fullURL;
 
-describe('Positive tests', () => {
+describe('Country Code param: Positive tests', () => {
   it.each([
     ['ru'],
     ['kg'],
@@ -24,7 +24,7 @@ describe('Positive tests', () => {
   });
 });
 
-describe('Negative tests', () => {
+describe('Country Code param: Negative tests', () => {
   it.each([
     ['RU', '"Uppercase existing"'],
     ['', 'Empty'],
