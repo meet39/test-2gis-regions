@@ -1,23 +1,21 @@
-import axios from 'axios';
-import { API, Data, Error } from '../services';
+import { ResponseData, ResponseError } from '../models';
+import { API } from '../config';
+import { sendGetRequest } from '../services/api';
+const fullURL = API.regions.fullURL;
 
 describe('Positive tests', () => {
   it('Search should be fuzzy and case-insensitive', async () => {
-    const response = await axios.get(API, {
-      params: {
-        q: 'ОВОСИБИРС'
-      }
+    const response = await sendGetRequest(fullURL, {
+      q: 'ОВОСИБИРС'
     });
-    const data: Data = response.data;
+    const data: ResponseData = response.data;
     expect(data.items[0].name).toContain('Новосибирск');
   });
   it('Search should work with numbers', async () => {
-    const response = await axios.get(API, {
-      params: {
-        q: 123
-      }
+    const response = await sendGetRequest(fullURL, {
+      q: 123
     });
-    const data: Data = response.data;
+    const data: ResponseData = response.data;
     expect(data).toHaveProperty('items');
   });
 
@@ -26,18 +24,14 @@ describe('Positive tests', () => {
     ['page', '10'],
     ['page_size', '5']
   ])('Search should ignore other params [?%s=%s]', async (param, value) => {
-    const expectResponse = await axios.get(API, {
-      params: {
-        q: 'оск'
-      }
+    const expectResponse = await sendGetRequest(fullURL, {
+      q: 'оск'
     });
-    const response = await axios.get(API, {
-      params: {
-        q: 'оск',
-        [param]: value
-      }
+    const response = await sendGetRequest(fullURL, {
+      q: 'оск',
+      [param]: value
     });
-    const data: Data = response.data;
+    const data: ResponseData = response.data;
     expect(data).toEqual(expectResponse.data);
   });
 });
@@ -48,12 +42,10 @@ describe('Negative tests', () => {
     ['A', 'One sign'],
     ['AA', 'Two sight']
   ])('[%s] %s search should throw Error', async (qValue: string) => {
-    const response = await axios.get(API, {
-      params: {
-        q: qValue
-      }
+    const response = await sendGetRequest(fullURL, {
+      q: qValue
     });
-    const data: Error = response.data;
+    const data: ResponseError = response.data;
 
     expect(data.error.message).toBe('Параметр \'q\' должен быть не менее 3 символов');
   });

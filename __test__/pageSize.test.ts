@@ -1,5 +1,7 @@
-import axios from 'axios';
-import { API, Data, Error } from '../services';
+import { ResponseData, ResponseError } from '../models';
+import { sendGetRequest } from '../services/api';
+import { API } from '../config';
+const fullURL = API.regions.fullURL;
 
 describe('Positive tests', () => {
   it.each([
@@ -7,13 +9,11 @@ describe('Positive tests', () => {
     [10],
     [15]
   ])('Should show [%s] items on page', async (pageSize: number) => {
-    const response = await axios.get(API, {
-      params: {
-        page_size: pageSize
-      }
+    const response = await sendGetRequest(fullURL, {
+      page_size: pageSize
     });
 
-    const data: Data = response.data;
+    const data: ResponseData = response.data;
 
     expect(data.items).toHaveLength(pageSize);
   });
@@ -25,13 +25,11 @@ describe('Negative tests', () => {
     ['', 'Empty'],
     [10.5, 'Fractional']
   ])('[%s] %s value should throw error', async (pageSize: string | number, reason: string) => {
-    const response = await axios.get(API, {
-      params: {
-        page_size: pageSize
-      }
+    const response = await sendGetRequest(fullURL, {
+      page_size: pageSize
     });
 
-    const data: Error = response.data;
+    const data: ResponseError = response.data;
 
     expect(data.error.message).toContain('Параметр \'page_size\' должен быть целым числом');
   });
@@ -41,13 +39,11 @@ describe('Negative tests', () => {
     [0, 'Zero'],
     [20, 'Unsuitable']
   ])('[%s] %s value should throw error items on page', async (pageSize: number | string) => {
-    const response = await axios.get(API, {
-      params: {
-        page_size: pageSize
-      }
+    const response = await sendGetRequest(fullURL, {
+      page_size: pageSize
     });
 
-    const data: Error = response.data;
+    const data: ResponseError = response.data;
     expect(data.error.message).toContain('Параметр \'page_size\' может быть одним из следующих значений: 5, 10, 15');
   });
 });

@@ -1,12 +1,14 @@
-import axios from 'axios';
-import { Data, defaultPage, defaultPageSize } from '../services';
+import { ResponseData } from '../models';
+import { API, defaultPage, defaultPageSize } from '../config';
+import { sendGetRequest } from '../services/api';
+
+const fullURL = API.regions.fullURL;
 
 describe('Positive tests', () => {
-  const API = 'https://regions-test.2gis.com/1.0/regions';
-  let data: Data;
+  let data: ResponseData;
 
   beforeEach(async () => {
-    const response = await axios.get(API);
+    const response = await sendGetRequest(fullURL);
     data = response.data;
   });
 
@@ -15,12 +17,10 @@ describe('Positive tests', () => {
   });
 
   it('Should be first page by default', async () => {
-    const firstPageRes = await axios.get(API, {
-      params: {
-        page: defaultPage
-      }
+    const firstPageRes = await sendGetRequest(fullURL, {
+      page: defaultPage
     });
-    const firstPageData: Data = firstPageRes.data;
+    const firstPageData: ResponseData = firstPageRes.data;
     expect(data.items).toEqual(firstPageData.items);
   });
 });
